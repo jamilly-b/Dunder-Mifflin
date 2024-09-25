@@ -1,13 +1,19 @@
 package com.DunderMifflin.Dunder_Mifflin.model.entities;
 
+import java.sql.Date;
 import java.util.Calendar;
 
 public class Relatorio {
 
+    int codigo;
     String problema;
     Calendar data;
     Setor setor;
     Funcionario funcionario;
+
+    public int getCodigo() {
+        return codigo;
+    }
 
     public String getProblema() {
         return problema;
@@ -20,7 +26,9 @@ public class Relatorio {
     public Calendar getData() {
         return data;
     }
-
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
     public void setData(Calendar data) {
         this.data = data;
     }
@@ -40,4 +48,6 @@ public class Relatorio {
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
+
+
 }
