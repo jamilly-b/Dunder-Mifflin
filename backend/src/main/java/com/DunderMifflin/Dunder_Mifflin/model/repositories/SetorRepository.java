@@ -9,27 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SetorRepository implements Repository <Setor, Integer> {
-    // public static final SetorRepository current = new SetorRepository();
+    public static final SetorRepository current = new SetorRepository();
     SetorRepository() {}
 
     @Override
     public void create(Setor s) throws SQLException {
-        String sql = "insert into setor(nome) values (?)";
+        String sql = "insert into setor(nome_setor) values (?)";
 
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
         pstm.setString(1, s.getNome());
 
         pstm.execute();
+
     }
 
     @Override
     public void update(Setor s) throws SQLException {
-        String sql = "update setor(nome) values (?)";
+        String sql = "update setor set nome_setor=? where codigo_setor=?";
 
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
         pstm.setString(1, s.getNome());
+        pstm.setInt(2, s.getCodigo());
 
         pstm.execute();
     }
@@ -45,7 +47,8 @@ public class SetorRepository implements Repository <Setor, Integer> {
         if(result.next()) {
 
             s = new Setor();
-            s.setNome(result.getString("nome"));
+            s.setNome(result.getString("nome_setor"));
+            s.setCodigo(result.getInt("codigo_setor"));
         }
 
         return s;
@@ -68,10 +71,11 @@ public class SetorRepository implements Repository <Setor, Integer> {
 
         List<Setor> setores = new ArrayList<Setor>();
 
-        if(result.next()) {
+        while (result.next()) {
 
             s = new Setor();
-            s.setNome(result.getString("nome"));
+            s.setNome(result.getString("nome_setor"));
+            s.setCodigo(result.getInt("codigo_setor"));
 
             setores.add(s);
         }

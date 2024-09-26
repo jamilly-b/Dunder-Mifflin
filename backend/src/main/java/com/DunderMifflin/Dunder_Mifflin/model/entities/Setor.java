@@ -35,4 +35,8 @@ public class Setor {
     public void setRelatorios(List<Relatorio> relatorios) {
         this.relatorios = relatorios;
     }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
 }
