@@ -1,5 +1,7 @@
 package com.DunderMifflin.Dunder_Mifflin.model.repositories;
 
+import com.DunderMifflin.Dunder_Mifflin.model.entities.Funcionario;
+import com.DunderMifflin.Dunder_Mifflin.model.entities.Relatorio;
 import com.DunderMifflin.Dunder_Mifflin.model.entities.Setor;
 
 import java.sql.PreparedStatement;
@@ -49,6 +51,10 @@ public class SetorRepository implements Repository <Setor, Integer> {
             s = new Setor();
             s.setNome(result.getString("nome_setor"));
             s.setCodigo(result.getInt("codigo_setor"));
+
+            List<Funcionario> funcionarios = FuncionarioRepository.current.findBySetor(s.getCodigo());
+
+            s.setFuncionarios(funcionarios);
         }
 
         return s;
