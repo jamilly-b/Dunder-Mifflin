@@ -20,20 +20,21 @@ public class FuncionarioRepository implements Repository <Funcionario, Integer> 
         pstm.setString(1, f.getNome());
         pstm.setString(2, f.getCargo());
         pstm.setString(3, f.getUrlImagem());
-        pstm.setInt(4, f.getSetor().getCodigo());
+        pstm.setInt(4, f.getSetor());
 
         pstm.execute();
     }
 
     @Override
     public void update(Funcionario f) throws SQLException {
-        String sql = "update funcionario (nome_funcionario, cargo_funcionario, urlImagem_funcionario, setor_codigo) values (?, ?, ?, ?)";
+        String sql = "UPDATE funcionario SET nome_funcionario = ?, cargo_funcionario = ?, urlImagem_funcionario = ?, setor_codigo = ? WHERE codigo_funcionario = ?";
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
         pstm.setString(1, f.getNome());
         pstm.setString(2, f.getCargo());
         pstm.setString(3, f.getUrlImagem());
-        pstm.setInt(4, f.getSetor().getCodigo());
+        pstm.setInt(4, f.getSetor());
+        pstm.setInt(5, f.getCodigo());
 
         pstm.execute();
     }
@@ -52,10 +53,31 @@ public class FuncionarioRepository implements Repository <Funcionario, Integer> 
             f.setNome(result.getString("nome_funcionario"));
             f.setCargo(result.getString("cargo_funcionario"));
             f.setUrlImagem(result.getString("urlImagem_funcionario"));
-            f.setSetor(new SetorRepository().read(result.getInt("setor_codigo")));
+            f.setSetor(result.getInt("setor_codigo"));
         }
 
         return f;
+    }
+
+    public List<Funcionario> findBySetor(int setorID) throws SQLException {
+        String sql = "select * from funcionario where setor_codigo =" + setorID;
+        ResultSet result = ConnectionManager.getCurrentConnection().prepareStatement(sql).executeQuery();
+
+        List<Funcionario> funcionarios = new ArrayList<>();
+
+        while (result.next()){
+            Funcionario f = new Funcionario();
+
+            f.setCodigo(result.getInt("codigo_funcionario"));
+            f.setNome(result.getString("nome_funcionario"));
+            f.setCargo(result.getString("cargo_funcionario"));
+            f.setUrlImagem(result.getString("urlImagem_funcionario"));
+            f.setSetor(result.getInt("setor_codigo"));
+
+            funcionarios.add(f);
+        }
+
+        return funcionarios;
     }
 
     @Override
@@ -66,7 +88,7 @@ public class FuncionarioRepository implements Repository <Funcionario, Integer> 
     }
 
     public List<Funcionario> readAll() throws SQLException {
-        String sql = "read * from funcionario";
+        String sql = "select * from funcionario";
         ResultSet result = ConnectionManager.getCurrentConnection().prepareStatement(sql).executeQuery();
 
         List<Funcionario> funcionarios = new ArrayList<Funcionario>();
@@ -78,7 +100,7 @@ public class FuncionarioRepository implements Repository <Funcionario, Integer> 
             f.setNome(result.getString("nome_funcionario"));
             f.setCargo(result.getString("cargo_funcionario"));
             f.setUrlImagem(result.getString("urlImagem_funcionario"));
-            f.setSetor(new SetorRepository().read(result.getInt("setor_codigo")));
+            f.setSetor(result.getInt("setor_codigo"));
 
             funcionarios.add(f);
         }

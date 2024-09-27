@@ -6,7 +6,7 @@ public class Funcionario {
     String nome;
     String cargo;
     String urlImagem;
-    Setor setor;
+    int setor;
 
     public int getCodigo() {
         return codigo;
@@ -40,11 +40,11 @@ public class Funcionario {
         this.urlImagem = urlImagem;
     }
 
-    public Setor getSetor() {
+    public int getSetor() {
         return setor;
     }
 
-    public void setSetor(Setor setor) {
+    public void setSetor(int setor) {
         this.setor = setor;
     }
 }

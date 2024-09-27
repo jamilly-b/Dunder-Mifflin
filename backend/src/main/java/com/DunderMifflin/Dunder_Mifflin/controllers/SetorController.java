@@ -1,6 +1,8 @@
 package com.DunderMifflin.Dunder_Mifflin.controllers;
 
+import com.DunderMifflin.Dunder_Mifflin.model.entities.Funcionario;
 import com.DunderMifflin.Dunder_Mifflin.model.entities.Setor;
+import com.DunderMifflin.Dunder_Mifflin.model.repositories.FuncionarioRepository;
 import com.DunderMifflin.Dunder_Mifflin.model.repositories.SetorRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +78,15 @@ public class SetorController {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{codigo}/funcionarios")
+    public List<Funcionario> readFuncionariosSetor(@PathVariable int codigo){
+        try{
+            return FuncionarioRepository.current.findBySetor(codigo);
+        } catch (SQLException e) {
+            return new ArrayList<>();
         }
     }
 }
