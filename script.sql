@@ -26,7 +26,7 @@ CREATE TABLE Administrador (
 CREATE TABLE Relatorio (
     id INT PRIMARY KEY AUTO_INCREMENT,
     problema VARCHAR(255) NOT NULL,
-    data DATE NOT NULL,
+    data DATETIME NOT NULL,
     setor_codigo INT,
     funcionario_codigo INT,
     FOREIGN KEY (setor_codigo) REFERENCES Setor(codigo_setor) ON DELETE CASCADE,
