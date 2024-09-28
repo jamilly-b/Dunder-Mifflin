@@ -6,48 +6,57 @@ import java.util.Calendar;
 public class Relatorio {
 
     int codigo;
-    String problema;
+    TipoRelatorio tipo;
     Calendar data;
-    Setor setor;
-    Funcionario funcionario;
+    private String dataFormatada;
+    int setor;
+    int funcionario;
 
     public int getCodigo() {
         return codigo;
     }
 
-    public String getProblema() {
-        return problema;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
-    public void setProblema(String problema) {
-        this.problema = problema;
+    public TipoRelatorio getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoRelatorio tipo) {
+        this.tipo = tipo;
     }
 
     public Calendar getData() {
         return data;
     }
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
+
     public void setData(Calendar data) {
         this.data = data;
     }
 
-    public Setor getSetor() {
+    public int getSetor() {
         return setor;
     }
 
-    public void setSetor(Setor setor) {
+    public void setSetor(int setor) {
         this.setor = setor;
     }
 
-    public Funcionario getFuncionario() {
+    public int getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
+    public void setFuncionario(int funcionario) {
         this.funcionario = funcionario;
     }
 
+    public String getDataFormatada() {
+        return dataFormatada;
+    }
 
+    public void setDataFormatada(String dataFormatada) {
+        this.dataFormatada = dataFormatada;
+    }
 }

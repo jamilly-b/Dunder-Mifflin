@@ -1,9 +1,12 @@
 package com.DunderMifflin.Dunder_Mifflin.controllers;
 
 import com.DunderMifflin.Dunder_Mifflin.model.entities.Funcionario;
+import com.DunderMifflin.Dunder_Mifflin.model.entities.Relatorio;
 import com.DunderMifflin.Dunder_Mifflin.model.entities.Setor;
 import com.DunderMifflin.Dunder_Mifflin.model.repositories.FuncionarioRepository;
+import com.DunderMifflin.Dunder_Mifflin.model.repositories.RelatorioRepository;
 import com.DunderMifflin.Dunder_Mifflin.model.repositories.SetorRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,4 +93,27 @@ public class SetorController {
             return new ArrayList<>();
         }
     }
+
+    @GetMapping("/{codigo}/relatorios")
+    public List<Relatorio> readRelatoriosDoSetor(@PathVariable int codigo){
+        try{
+            return RelatorioRepository.current.relatoriosDoSetor(codigo);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    @GetMapping("{codigo}/relatorios/filtrar")
+    public List<Relatorio> filtrarRelatoriosPorDia(
+            @PathVariable int codigo,
+            @RequestParam("data") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate data) {
+        try {
+            return RelatorioRepository.current.relatoriosDoSetorPorDia(codigo, data);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
 }

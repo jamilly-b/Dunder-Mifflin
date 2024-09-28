@@ -1,8 +1,11 @@
 package com.DunderMifflin.Dunder_Mifflin.model.repositories;
 
 import com.DunderMifflin.Dunder_Mifflin.model.entities.Relatorio;
+import com.DunderMifflin.Dunder_Mifflin.model.entities.TipoRelatorio;
+import com.DunderMifflin.Dunder_Mifflin.utils.DateFormatter;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
@@ -19,10 +22,10 @@ public class RelatorioRepository implements Repository<Relatorio, Integer> {
 
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
-        pstm.setString(1, r.getProblema());
-        pstm.setDate(2, new java.sql.Date(r.getData().getTimeInMillis()));
-        pstm.setInt(3, r.getSetor().getCodigo());
-        pstm.setInt(4, r.getFuncionario().getCodigo());
+        pstm.setString(1, r.getTipo().name());
+        pstm.setTimestamp(2, new java.sql.Timestamp(r.getData().getTimeInMillis()));
+        pstm.setInt(3, r.getSetor());
+        pstm.setInt(4, r.getFuncionario());
 
         pstm.execute();
     }
@@ -33,10 +36,10 @@ public class RelatorioRepository implements Repository<Relatorio, Integer> {
 
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
-        pstm.setString(1, r.getProblema());
-        pstm.setDate(2, new java.sql.Date(r.getData().getTimeInMillis()));
-        pstm.setInt(3, r.getSetor().getCodigo());
-        pstm.setInt(4, r.getFuncionario().getCodigo());
+        pstm.setString(1, r.getTipo().getDescricao());
+        pstm.setTimestamp(2, new java.sql.Timestamp(r.getData().getTimeInMillis()));
+        pstm.setInt(3, r.getSetor());
+        pstm.setInt(4, r.getFuncionario());
         pstm.setInt(5, r.getCodigo());
 
         pstm.execute();
@@ -53,14 +56,16 @@ public class RelatorioRepository implements Repository<Relatorio, Integer> {
         if (result.next()) {
             r = new Relatorio();
             r.setCodigo(result.getInt("codigo_relatorio"));
-            r.setProblema(result.getString("problema"));
+
+            String tipoProblema = result.getString("tipo_relatorio");
+            r.setTipo(TipoRelatorio.valueOf(tipoProblema));
 
             Calendar data = Calendar.getInstance();
             data.setTime(result.getDate("data"));
             r.setData(data);
 
-            r.setSetor(new SetorRepository().read(result.getInt("setor_codigo")));
-            r.setFuncionario(new FuncionarioRepository().read(result.getInt("funcionario_codigo")));
+            r.setSetor(result.getInt("setor_codigo"));
+            r.setFuncionario(result.getInt("funcionario_codigo"));
         }
 
         return r;
@@ -82,18 +87,108 @@ public class RelatorioRepository implements Repository<Relatorio, Integer> {
         while (result.next()) {
             Relatorio r = new Relatorio();
             r.setCodigo(result.getInt("codigo_relatorio"));
-            r.setProblema(result.getString("problema"));
+
+            String tipoProblema = result.getString("tipo_relatorio");
+            r.setTipo(TipoRelatorio.valueOf(tipoProblema));
 
             Calendar data = Calendar.getInstance();
-            data.setTime(result.getDate("data"));
-            r.setData(data);
+            data.setTime(result.getTimestamp("data"));
+            String dataFormatada = DateFormatter.formatDateWithTime(data);
+            r.setDataFormatada(dataFormatada);
 
-            r.setSetor(new SetorRepository().read(result.getInt("setor_codigo")));
-            r.setFuncionario(new FuncionarioRepository().read(result.getInt("funcionario_codigo")));
+            r.setSetor(result.getInt("setor_codigo"));
+            r.setFuncionario(result.getInt("funcionario_codigo"));
 
             relatorios.add(r);
         }
 
         return relatorios;
     }
+
+    public List<Relatorio> relatoriosDoFuncionario(int codigo) throws SQLException {
+        String sql = "SELECT * FROM relatorio where funcionario_codigo = " + codigo;
+        ResultSet result = ConnectionManager.getCurrentConnection().prepareStatement(sql).executeQuery();
+
+        List<Relatorio> relatorios = new ArrayList<>();
+
+        while (result.next()) {
+            Relatorio r = new Relatorio();
+            r.setCodigo(result.getInt("id"));
+
+            String tipoProblema = result.getString("problema");
+            r.setTipo(TipoRelatorio.valueOf(tipoProblema));
+
+            Calendar data = Calendar.getInstance();
+            data.setTime(result.getTimestamp("data"));
+            String dataFormatada = DateFormatter.formatDateWithTime(data);
+            r.setDataFormatada(dataFormatada);
+
+            r.setSetor(result.getInt("setor_codigo"));
+            r.setFuncionario(result.getInt("funcionario_codigo"));
+
+            relatorios.add(r);
+        }
+
+        return relatorios;
+    }
+
+    public List<Relatorio> relatoriosDoSetor(int codigo) throws SQLException {
+        String sql = "SELECT * FROM relatorio where setor_codigo = " + codigo;
+        ResultSet result = ConnectionManager.getCurrentConnection().prepareStatement(sql).executeQuery();
+
+        List<Relatorio> relatorios = new ArrayList<>();
+
+        while (result.next()) {
+            Relatorio r = new Relatorio();
+            r.setCodigo(result.getInt("id"));
+
+            String tipoProblema = result.getString("problema");
+            r.setTipo(TipoRelatorio.valueOf(tipoProblema));
+
+            Calendar data = Calendar.getInstance();
+            data.setTime(result.getTimestamp("data"));
+            String dataFormatada = DateFormatter.formatDateWithTime(data);
+            r.setDataFormatada(dataFormatada);
+
+            r.setSetor(result.getInt("setor_codigo"));
+            r.setFuncionario(result.getInt("funcionario_codigo"));
+
+            relatorios.add(r);
+        }
+
+        return relatorios;
+    }
+
+    public List<Relatorio> relatoriosDoSetorPorDia(int codigo, LocalDate data) throws SQLException {
+        String sql = "SELECT * FROM relatorio WHERE setor_codigo = ? AND DATE(data) = ?";
+
+        PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
+        pstm.setInt(1, codigo);
+        pstm.setDate(2, Date.valueOf(data));
+
+        ResultSet result = pstm.executeQuery();
+
+        List<Relatorio> relatorios = new ArrayList<>();
+
+        while (result.next()) {
+            Relatorio r = new Relatorio();
+            r.setCodigo(result.getInt("id"));
+
+            String tipoProblema = result.getString("problema");
+            r.setTipo(TipoRelatorio.valueOf(tipoProblema));
+
+            Calendar dataRelatorio = Calendar.getInstance();
+            dataRelatorio.setTime(result.getTimestamp("data"));
+            String dataFormatada = DateFormatter.formatDateWithTime(dataRelatorio);
+            r.setDataFormatada(dataFormatada);
+
+            r.setSetor(result.getInt("setor_codigo"));
+            r.setFuncionario(result.getInt("funcionario_codigo"));
+
+            relatorios.add(r);
+        }
+
+        return relatorios;
+    }
+
 }
