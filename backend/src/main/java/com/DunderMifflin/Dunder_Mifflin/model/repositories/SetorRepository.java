@@ -53,8 +53,10 @@ public class SetorRepository implements Repository <Setor, Integer> {
             s.setCodigo(result.getInt("codigo_setor"));
 
             List<Funcionario> funcionarios = FuncionarioRepository.current.findBySetor(s.getCodigo());
+            List<Relatorio> relatorios = RelatorioRepository.current.relatoriosDoSetor(s.getCodigo());
 
             s.setFuncionarios(funcionarios);
+            s.setRelatorios(relatorios);
         }
 
         return s;
@@ -84,6 +86,12 @@ public class SetorRepository implements Repository <Setor, Integer> {
             s.setCodigo(result.getInt("codigo_setor"));
 
             setores.add(s);
+
+            List<Funcionario> funcionarios = FuncionarioRepository.current.findBySetor(s.getCodigo());
+            List<Relatorio> relatorios = RelatorioRepository.current.relatoriosDoSetor(s.getCodigo());
+
+            s.setFuncionarios(funcionarios);
+            s.setRelatorios(relatorios);
         }
 
         return setores;
