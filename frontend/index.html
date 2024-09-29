@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setores</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="lista.css">
+</head>
+<body>
+    <header></header>
+    <article>
+        <h1>Setores</h1>
+        <div id="setores" class="main-content">
+            <ul class="lista" id="lista-setores">
+                <li id="template-setor" style="display: none;">
+                    <div class="card">
+                        <a href="#">
+                            <div class="card-titulo" id="nome-setor">
+                                <p>_NomeSetor_</p>
+                            </div>
+                            <div class="dados-setor">
+                                <p>Funcionários: _qtdFuncionarios_</p>
+                                <p>Relatórios: _qtdRelatorios_</p>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <button> Novo setor </button>
+        </div>
+    </article>
+    <footer></footer>
+
+    <script>
+        async function fetchSetores() {
+            try {
+                const response = await fetch('http://localhost:8080/setores');
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar os setores');
+                }
+
+                const setores = await response.json();
+                const listaSetores = document.getElementById('lista-setores'); 
+                const templateSetor = document.getElementById('template-setor');
+
+                listaSetores.innerHTML = '';
+
+                setores.forEach(setor => {
+                    const setorElement = templateSetor.cloneNode(true);
+                    setorElement.style.display = 'block';
+                    setorElement.querySelector('.card-titulo p').textContent = setor.nome;
+                    setorElement.querySelector('.dados-setor p:nth-child(1)').textContent = `Funcionários: ${setor.funcionarios.length}`;
+                    setorElement.querySelector('.dados-setor p:nth-child(2)').textContent = `Relatórios: ${setor.relatorios.length}`;
+                    setorElement.querySelector('a').href = `http://localhost:8080/setores/${setor.codigo}`;
+
+                    listaSetores.appendChild(setorElement);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar setores:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchSetores);
+    </script>
+</body>
+</html>

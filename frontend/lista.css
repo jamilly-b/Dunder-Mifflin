@@ -1,0 +1,44 @@
+.lista {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 5rem;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+}
+
+.lista li {
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    border: 1px solid rgb(128, 128, 128);
+    border-radius: 1rem;
+    width: 30rem;
+}
+
+.card-titulo {
+    padding: 1rem;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.card-titulo#nome-setor{
+    border-bottom: 1px solid gray;
+}
+
+.card-titulo#nome-funcionario{
+    border-top: 1px solid gray;
+    background-color: rgb(232, 199, 52);
+}
+
+.card p {
+    margin: 10px;
+}
+
+img {
+    object-fit: cover;
+    background-size: ;
+}
