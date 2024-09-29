@@ -52,7 +52,7 @@
                     setorElement.querySelector('.card-titulo p').textContent = setor.nome;
                     setorElement.querySelector('.dados-setor p:nth-child(1)').textContent = `Funcionários: ${setor.funcionarios.length}`;
                     setorElement.querySelector('.dados-setor p:nth-child(2)').textContent = `Relatórios: ${setor.relatorios.length}`;
-                    setorElement.querySelector('a').href = `http://localhost:8080/setores/${setor.codigo}`;
+                    setorElement.querySelector('a').href = `funcionarios.html?codigo=${setor.codigo}`;
 
                     listaSetores.appendChild(setorElement);
                 });
