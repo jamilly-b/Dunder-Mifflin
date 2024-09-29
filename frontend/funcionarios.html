@@ -37,6 +37,7 @@
                             const novoFuncionario = templateFuncionario.cloneNode(true);
                             novoFuncionario.querySelector(".imagem-funcionario img").src = funcionario.urlImagem;
                             novoFuncionario.querySelector("#nome-funcionario p").textContent = funcionario.nome;
+                            novoFuncionario.querySelector('a').href = `problemas.html?codigo=${funcionario.codigo}`;
                             listaFuncionarios.appendChild(novoFuncionario);
                         });
                     })
@@ -51,8 +52,8 @@
 <body>
     <header></header>
     <article>
-        <h1>Funcionarios _Nome do SETOR_</h1>
-        <div id="funcionarios" class="main-content">
+        <h1>Funcionarios _NomeDoSetor_</h1>
+        <Div id="funcionarios" class="main-content">
             <ul class="lista" id="lista-funcionarios">
                 <li id="template-funcionario" >
                     <div class="card">

@@ -1,0 +1,20 @@
+ul li {
+    background-color: rgba(225, 17, 17, 0.918); 
+    padding: 3rem;
+    margin: 1rem;
+    text-align: center;
+    border-radius: 1rem;
+    color: white;
+    font-size: large;
+    font-weight: bold;
+    cursor: pointer; 
+}
+
+ul li.selected {
+    background-color: rgba(150, 10, 0, 0.918);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 5rem;
+}

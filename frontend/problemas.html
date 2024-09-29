@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatar Problema</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="relato.css">
+
+</head>
+<body>
+    <header></header>
+
+    <article>
+        <h1>Relatar problema</h1>
+        <ul id="lista-problemas">
+            <li data-tipo="FALHA_EQUIPAMENTO">Falha em equipamento</li>
+            <li data-tipo="FALTA_INSUMO">Falta de insumo</li>
+            <li data-tipo="ASSEDIO">Assédio</li>
+            <li data-tipo="FALHA_PESSOAL">Falha pessoal</li>
+            <li data-tipo="ACIDENTE">Acidente</li>
+        </ul>
+    </article>
+
+    <footer></footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const getQueryParam = (param) => {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(param);
+            };
+            
+            const funcionario = getQueryParam("codigo");
+
+            const listaProblemas = document.getElementById('lista-problemas');
+            let tipoSelecionado = null;
+            let descricaoSelecionada = null;
+        
+            listaProblemas.querySelectorAll('li').forEach(item => {
+                item.addEventListener('click', () => {
+                    listaProblemas.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                    item.classList.add('selected');
+
+                    tipoSelecionado = item.getAttribute('data-tipo');
+                    descricaoSelecionada = item.textContent;
+
+                    enviarRelatorio();
+                });
+            });
+        
+            function enviarRelatorio() {
+                if (!tipoSelecionado || !descricaoSelecionada) {
+                    alert('Nenhum tipo de problema foi selecionado.');
+                    return;
+                }
+        
+                const dataRelatorio = {
+                    tipo: tipoSelecionado,
+                    funcionario: funcionario 
+                };
+        
+                var answer = window.confirm(`Deseja confirmar o envio do problema: "${descricaoSelecionada}"?`);
+                if (answer) {
+                    fetch(`http://localhost:8080/funcionarios/${funcionario}/relatorios`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(dataRelatorio)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao enviar relatório');
+                        }
+                        alert('Relatório enviado com sucesso!');
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert('Erro ao enviar relatório');
+                    });
+                }
+            }
+        });
+             
+    </script>
+    
+</body>
+</html>
