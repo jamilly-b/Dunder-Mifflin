@@ -14,7 +14,7 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 return urlParams.get(param);
             };
-            
+
             const isAuthenticated = sessionStorage.getItem('authToken');
             const setorId = getQueryParam("codigo");
 

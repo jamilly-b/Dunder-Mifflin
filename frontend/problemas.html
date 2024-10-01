@@ -6,11 +6,14 @@
     <title>Relatar Problema</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/relato.css">
-
+    <script>
+        const isAuthenticated = sessionStorage.getItem('authToken');
+        if(isAuthenticated){
+            window.history.back();
+        }
+    </script>
 </head>
 <body>
-    <header></header>
-
     <article>
         <h1>Relatar problema</h1>
         <ul id="lista-problemas">
@@ -21,8 +24,6 @@
             <li data-tipo="ACIDENTE">Acidente</li>
         </ul>
     </article>
-
-    <footer></footer>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const getQueryParam = (param) => {
