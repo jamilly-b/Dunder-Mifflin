@@ -8,12 +8,13 @@ ul{
 
 span{
     font-size: medium;
+    color: gray;
 }
 
 a{
     color: gray;
     text-decoration: underline;
-    margin: 0rem 3rem;
+    margin: 0rem 1rem;
 }
 
 li {
@@ -21,4 +22,12 @@ li {
     border-radius: 1.5rem;
     padding: 2rem;
     margin-bottom: 1.5rem;
+}
+
+select, input, option{
+    font-size: medium;
+    margin-right: 2rem;
+    border: 1px solid gray;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
 }

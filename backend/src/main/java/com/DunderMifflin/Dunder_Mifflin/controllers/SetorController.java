@@ -94,26 +94,4 @@ public class SetorController {
         }
     }
 
-    @GetMapping("/{codigo}/relatorios")
-    public List<Relatorio> readRelatoriosDoSetor(@PathVariable int codigo){
-        try{
-            return RelatorioRepository.current.relatoriosDoSetor(codigo);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-    }
-
-    @GetMapping("{codigo}/relatorios/filtrar")
-    public List<Relatorio> filtrarRelatoriosPorDia(
-            @PathVariable int codigo,
-            @RequestParam("data") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate data) {
-        try {
-            return RelatorioRepository.current.relatoriosDoSetorPorDia(codigo, data);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-    }
-
 }

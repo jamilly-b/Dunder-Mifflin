@@ -11,31 +11,58 @@
     <article>
         <h1>Problemas reportados</h1>
         <div>
-            <span>Filtrar: </span>
-            <select>Setores</select>
-            <input type="date" name="" id="">
-            <a href="">Limpar filtros</a>
+            <select name="setores" id="filtroSetor">
+                <option value="">Todos os setores</option>
+            </select>
+            <input type="date" name="dataRelato" id="filtroData">
+            <a href="#" id="limparFiltros">Limpar filtros</a>
         </div>
-        <ul>
-            <li>
-                <h2>Problema: {tipoProblema}</h1>
-                <p>Funcionario: {nomeFuncionario}</p>
-                <p>Setor: {nomeSetor}</p>
-                <p>Data: {dataRelato}</p>
-            </li>
+        <ul id="listaRelatos">
+            <!-- Lista de relatos será exibida aqui -->
         </ul>
     </article>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const ulRelatos = document.querySelector('ul'); 
-            const filtroSetor = document.querySelector('select');
-            const filtroData = document.querySelector('input[type="date"]'); 
-            const limparFiltros = document.querySelector('a');
+            const ulRelatos = document.querySelector('#listaRelatos'); 
+            const filtroSetor = document.querySelector('#filtroSetor');
+            const filtroData = document.querySelector('#filtroData'); 
+            const limparFiltros = document.querySelector('#limparFiltros');
         
-            // Função para buscar os dados da API
+            // Carregar a lista de setores e popular o select
+            function fetchSetores() {
+                fetch('http://localhost:8080/setores')
+                    .then(response => response.json())
+                    .then(setores => {
+                        setores.forEach(setor => {
+                            const option = document.createElement('option');
+                            option.value = setor.codigo;
+                            option.textContent = setor.nome;
+                            filtroSetor.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao buscar setores:', error));
+            }
+
+            // Função para buscar os relatos com filtros
             function fetchRelatos() {
-                fetch('http://localhost:8080/relatorios')
+                let url = 'http://localhost:8080/relatorios'; // Endpoint base para todos os relatos
+
+                // Adicionar filtros de setor e data na URL, se aplicável
+                const setor = filtroSetor.value;
+                const data = filtroData.value;
+
+                if (setor && data) {
+                    const formattedDate = data.split('-').reverse().join('-'); // Formata para dd-MM-yyyy
+                    url = `http://localhost:8080/relatorios/setor/${setor}/data?data=${formattedDate}`;
+                } else if (setor) {
+                    url = `http://localhost:8080/relatorios/setor/${setor}`;
+                } else if (data) {
+                    const formattedDate = data.split('-').reverse().join('-');
+                    url = `http://localhost:8080/relatorios/data?data=${formattedDate}`;
+                }
+
+                fetch(url)
                     .then(response => response.json())
                     .then(relatos => {
                         exibirRelatos(relatos);
@@ -43,12 +70,10 @@
                     .catch(error => console.error('Erro ao buscar relatos:', error));
             }
         
-            // Função para exibir os relatos na página
             function exibirRelatos(relatos) {
-                ulRelatos.innerHTML = '';
+                ulRelatos.innerHTML = ''; 
                 relatos.forEach(relato => {
                     const li = document.createElement('li');
-                    console.log("relato: " + relato.problema);
                     li.innerHTML = `
                         <h2>Problema: ${relato.tipoProblema}</h2>
                         <p>Funcionario: ${relato.funcionario}</p>
@@ -58,7 +83,18 @@
                     ulRelatos.appendChild(li);
                 });
             }
+
+            limparFiltros.addEventListener('click', (e) => {
+                e.preventDefault();
+                filtroSetor.value = '';
+                filtroData.value = '';
+                fetchRelatos();
+            });
         
+            filtroSetor.addEventListener('change', fetchRelatos);
+            filtroData.addEventListener('change', fetchRelatos);
+        
+            fetchSetores();
             fetchRelatos();
         });        
     </script>

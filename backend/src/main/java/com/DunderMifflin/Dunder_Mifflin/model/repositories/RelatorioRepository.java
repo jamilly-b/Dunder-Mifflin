@@ -160,6 +160,37 @@ public class RelatorioRepository implements Repository<Relatorio, Integer> {
         return relatorios;
     }
 
+    public List<Relatorio> relatoriosPorDia(LocalDate data) throws SQLException {
+        String sql = "SELECT * FROM relatorio WHERE DATE(data) = ?";
+
+        PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
+        pstm.setDate(1, Date.valueOf(data));
+
+        ResultSet result = pstm.executeQuery();
+
+        List<Relatorio> relatorios = new ArrayList<>();
+
+        while (result.next()) {
+            Relatorio r = new Relatorio();
+            r.setCodigo(result.getInt("id"));
+
+            String tipoProblema = result.getString("problema");
+            r.setTipo(TipoRelatorio.valueOf(tipoProblema));
+
+            Calendar dataRelatorio = Calendar.getInstance();
+            dataRelatorio.setTime(result.getTimestamp("data"));
+            String dataFormatada = DateFormatter.formatDateWithTime(dataRelatorio);
+            r.setDataFormatada(dataFormatada);
+
+            r.setSetor(result.getInt("setor_codigo"));
+            r.setFuncionario(result.getInt("funcionario_codigo"));
+
+            relatorios.add(r);
+        }
+
+        return relatorios;
+    }
+
     public List<Relatorio> relatoriosDoSetorPorDia(int codigo, LocalDate data) throws SQLException {
         String sql = "SELECT * FROM relatorio WHERE setor_codigo = ? AND DATE(data) = ?";
 
