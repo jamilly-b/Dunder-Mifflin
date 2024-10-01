@@ -18,7 +18,6 @@
             <a href="#" id="limparFiltros">Limpar filtros</a>
         </div>
         <ul id="listaRelatos">
-            <!-- Lista de relatos será exibida aqui -->
         </ul>
     </article>
 
@@ -29,7 +28,6 @@
             const filtroData = document.querySelector('#filtroData'); 
             const limparFiltros = document.querySelector('#limparFiltros');
         
-            // Carregar a lista de setores e popular o select
             function fetchSetores() {
                 fetch('http://localhost:8080/setores')
                     .then(response => response.json())
@@ -44,11 +42,10 @@
                     .catch(error => console.error('Erro ao buscar setores:', error));
             }
 
-            // Função para buscar os relatos com filtros
-            function fetchRelatos() {
-                let url = 'http://localhost:8080/relatorios'; // Endpoint base para todos os relatos
 
-                // Adicionar filtros de setor e data na URL, se aplicável
+            function fetchRelatos() {
+                let url = 'http://localhost:8080/relatorios';
+
                 const setor = filtroSetor.value;
                 const data = filtroData.value;
 
@@ -98,5 +95,6 @@
             fetchRelatos();
         });        
     </script>
+    <script src="header.js"></script>
 </body>
 </html>

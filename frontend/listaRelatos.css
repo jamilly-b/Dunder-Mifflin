@@ -2,7 +2,7 @@ h1{
     margin-bottom: 5rem;
 }
 
-ul{
+ul#listaRelatos{
     margin-top: 2.5rem;;
 }
 
@@ -11,13 +11,14 @@ span{
     color: gray;
 }
 
-a{
+a#limparFiltros{
     color: gray;
     text-decoration: underline;
     margin: 0rem 1rem;
+    font-size: small;
 }
 
-li {
+#listaRelatos li {
     border: 1px solid gray;
     border-radius: 1.5rem;
     padding: 2rem;

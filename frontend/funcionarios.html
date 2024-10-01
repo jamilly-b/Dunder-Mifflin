@@ -31,26 +31,55 @@
     
                         const listaFuncionarios = document.getElementById("lista-funcionarios");
                         const templateFuncionario = document.getElementById("template-funcionario");
-                        templateFuncionario.remove();
+    
+                        listaFuncionarios.innerHTML = '';
     
                         setor.funcionarios.forEach(funcionario => {
                             const novoFuncionario = templateFuncionario.cloneNode(true);
                             novoFuncionario.querySelector(".imagem-funcionario img").src = funcionario.urlImagem;
                             novoFuncionario.querySelector("#nome-funcionario p").textContent = funcionario.nome;
                             novoFuncionario.querySelector('a').href = `problemas.html?codigo=${funcionario.codigo}`;
+                            novoFuncionario.style.display = 'block';
                             listaFuncionarios.appendChild(novoFuncionario);
                         });
                     })
                     .catch(error => console.error('Erro ao carregar o setor:', error));
+    
             } else {
-                console.error('ID do setor não encontrado na URL');
+                const url = `http://localhost:8080/funcionarios`;
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao carregar os funcionários');
+                        }
+                        return response.json();
+                    })
+                    .then(funcionarios => {
+                        document.querySelector("h1").textContent = `Todos os Funcionários`;
+    
+                        const listaFuncionarios = document.getElementById("lista-funcionarios");
+                        const templateFuncionario = document.getElementById("template-funcionario");
+    
+                        // Limpa a lista de funcionários atual
+                        listaFuncionarios.innerHTML = '';
+    
+                        // Percorre os funcionários retornados pela API
+                        funcionarios.forEach(funcionario => {
+                            const novoFuncionario = templateFuncionario.cloneNode(true);
+                            novoFuncionario.querySelector(".imagem-funcionario img").src = funcionario.urlImagem;
+                            novoFuncionario.querySelector("#nome-funcionario p").textContent = funcionario.nome;
+                            novoFuncionario.querySelector('a').href = `problemas.html?codigo=${funcionario.codigo}`;
+                            novoFuncionario.style.display = 'block'; // Caso o template esteja escondido
+                            listaFuncionarios.appendChild(novoFuncionario);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar os funcionários:', error));
             }
         });
-    </script>
-
+    </script>    
+    <script src="header.js"></script>
 </head>
 <body>
-    <header></header>
     <article>
         <h1>Funcionarios _NomeDoSetor_</h1>
         <Div id="funcionarios" class="main-content">
@@ -68,9 +97,16 @@
                     </div>
                 </li>
             </ul>
-            <button> Novo Funcionário </button>
         </div>
+        <button style="display: none" class="botao-adm"> Novo Funcionário </button>
+        <script>
+            const isAuthenticated = sessionStorage.getItem('authToken');
+            const botao = document.querySelector('.botao-adm');
+
+            if (isAuthenticated) {
+                botao.style.display = "block";
+            }
+        </script>
     </article>
-    <footer></footer>
 </body>
 </html>

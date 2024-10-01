@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <form id="loginForm">
+        <h1>Login</h1>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+        </div>
+        <div>
+            <label for="password">Senha:</label>
+            <input type="password" id="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (email && password) {
+                // Simula a autenticação bem-sucedida
+                const authToken = 'RandomAuthToken'; // Gerar um token aleatório ou fixo
+
+                // Armazena o token no sessionStorage
+                sessionStorage.setItem('authToken', authToken);
+                sessionStorage.setItem('userEmail', email);
+
+                window.location.href = 'index.html';
+            } else {
+                alert('Por favor, insira um email e uma senha válidos.');
+            }
+        });
+    </script>
+
+</body>
+</html>
