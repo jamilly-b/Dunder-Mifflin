@@ -1,5 +1,6 @@
 package com.DunderMifflin.Dunder_Mifflin.model.repositories;
 
+import com.DunderMifflin.Dunder_Mifflin.DTO.RelatorioDTO;
 import com.DunderMifflin.Dunder_Mifflin.model.entities.Relatorio;
 import com.DunderMifflin.Dunder_Mifflin.model.entities.TipoRelatorio;
 import com.DunderMifflin.Dunder_Mifflin.utils.DateFormatter;
@@ -86,9 +87,9 @@ public class RelatorioRepository implements Repository<Relatorio, Integer> {
 
         while (result.next()) {
             Relatorio r = new Relatorio();
-            r.setCodigo(result.getInt("codigo_relatorio"));
+            r.setCodigo(result.getInt("id"));
 
-            String tipoProblema = result.getString("tipo_relatorio");
+            String tipoProblema = result.getString("problema");
             r.setTipo(TipoRelatorio.valueOf(tipoProblema));
 
             Calendar data = Calendar.getInstance();
@@ -189,6 +190,26 @@ public class RelatorioRepository implements Repository<Relatorio, Integer> {
         }
 
         return relatorios;
+    }
+
+    public List<RelatorioDTO> converterParaDTO(List<Relatorio> relatorios) throws SQLException {
+        List<RelatorioDTO> dtos = new ArrayList<>();
+        for (Relatorio relatorio : relatorios) {
+            RelatorioDTO dto = new RelatorioDTO();
+
+            dto.setCodigo(relatorio.getCodigo());
+            dto.setTipoProblema(relatorio.getTipo().getDescricao());
+            dto.setData(relatorio.getDataFormatada());
+
+            String nomeFuncionario = FuncionarioRepository.current.read(relatorio.getFuncionario()).getNome();
+            dto.setFuncionario(nomeFuncionario);
+
+            String nomeSetor = SetorRepository.current.read(relatorio.getFuncionario()).getNome();
+            dto.setSetor(nomeSetor);
+
+            dtos.add(dto);
+        }
+        return dtos;
     }
 
 }

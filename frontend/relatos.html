@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problemas reportados</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="listaRelatos.css">
+</head>
+<body>
+    <article>
+        <h1>Problemas reportados</h1>
+        <div>
+            <span>Filtrar: </span>
+            <select>Setores</select>
+            <input type="date" name="" id="">
+            <a href="">Limpar filtros</a>
+        </div>
+        <ul>
+            <li>
+                <h2>Problema: {tipoProblema}</h1>
+                <p>Funcionario: {nomeFuncionario}</p>
+                <p>Setor: {nomeSetor}</p>
+                <p>Data: {dataRelato}</p>
+            </li>
+        </ul>
+    </article>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ulRelatos = document.querySelector('ul'); 
+            const filtroSetor = document.querySelector('select');
+            const filtroData = document.querySelector('input[type="date"]'); 
+            const limparFiltros = document.querySelector('a');
+        
+            // Função para buscar os dados da API
+            function fetchRelatos() {
+                fetch('http://localhost:8080/relatorios')
+                    .then(response => response.json())
+                    .then(relatos => {
+                        exibirRelatos(relatos);
+                    })
+                    .catch(error => console.error('Erro ao buscar relatos:', error));
+            }
+        
+            // Função para exibir os relatos na página
+            function exibirRelatos(relatos) {
+                ulRelatos.innerHTML = '';
+                relatos.forEach(relato => {
+                    const li = document.createElement('li');
+                    console.log("relato: " + relato.problema);
+                    li.innerHTML = `
+                        <h2>Problema: ${relato.tipoProblema}</h2>
+                        <p>Funcionario: ${relato.funcionario}</p>
+                        <p>Setor: ${relato.setor}</p>
+                        <p>Data: ${relato.data}</p>
+                    `;
+                    ulRelatos.appendChild(li);
+                });
+            }
+        
+            fetchRelatos();
+        });        
+    </script>
+</body>
+</html>

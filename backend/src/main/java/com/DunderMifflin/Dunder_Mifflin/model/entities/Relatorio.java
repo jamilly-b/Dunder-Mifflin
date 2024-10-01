@@ -1,6 +1,5 @@
 package com.DunderMifflin.Dunder_Mifflin.model.entities;
 
-import java.sql.Date;
 import java.util.Calendar;
 
 public class Relatorio {

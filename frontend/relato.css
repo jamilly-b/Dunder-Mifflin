@@ -10,7 +10,7 @@ ul li {
     cursor: pointer; 
 }
 
-ul li.selected {
+ul li:hover {
     background-color: rgba(150, 10, 0, 0.918);
 }
 

@@ -1,0 +1,24 @@
+h1{
+    margin-bottom: 5rem;
+}
+
+ul{
+    margin-top: 2.5rem;;
+}
+
+span{
+    font-size: medium;
+}
+
+a{
+    color: gray;
+    text-decoration: underline;
+    margin: 0rem 3rem;
+}
+
+li {
+    border: 1px solid gray;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
