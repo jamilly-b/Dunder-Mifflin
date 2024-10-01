@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/lista.css">
     <link rel="stylesheet" href="css/modal.css">
+    <script>
+        const isAuthenticated = sessionStorage.getItem('authToken');
+        if(!isAuthenticated){
+            window.location.href = "login.html";
+        }
+    </script>
 </head>
 <body>
     <article>
