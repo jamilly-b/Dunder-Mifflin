@@ -27,9 +27,16 @@
     padding: 1rem;
     border-radius: 1rem;
     border: 1px solid lightgray;
+    font-size: medium;
 }
 .modal form input[type="button"]{
     background-color:  rgb(6, 103, 249);
     color: white;
     font-size: medium;
+}
+
+.modal form input[value="Fechar"]{
+    background-color: white;
+    color: rgb(6, 103, 249);
+    border: 1px solid rgb(6, 103, 249);
 }
