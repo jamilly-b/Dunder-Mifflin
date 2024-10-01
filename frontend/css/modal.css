@@ -1,0 +1,35 @@
+.modal{
+    position: fixed; 
+    top: 40%; 
+    left: 50%; 
+    transform: translate(-50%, -20%); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal form{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgray;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    max-width: 30rem;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.457);
+}
+.modal form input{
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid lightgray;
+}
+.modal form input[type="button"]{
+    background-color:  rgb(6, 103, 249);
+    color: white;
+    font-size: medium;
+}
