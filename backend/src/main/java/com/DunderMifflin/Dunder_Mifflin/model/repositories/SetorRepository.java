@@ -40,27 +40,26 @@ public class SetorRepository implements Repository <Setor, Integer> {
 
     @Override
     public Setor read(Integer k) throws SQLException {
-        String sql  = "select * from setor where codigo_setor = "+k;
-
+        String sql  = "select * from setor where codigo_setor = " + k;
         ResultSet result = ConnectionManager.getCurrentConnection().prepareStatement(sql).executeQuery();
 
-        Setor s = null;
-
-        if(result.next()) {
-
-            s = new Setor();
-            s.setNome(result.getString("nome_setor"));
-            s.setCodigo(result.getInt("codigo_setor"));
-
-            List<Funcionario> funcionarios = FuncionarioRepository.current.findBySetor(s.getCodigo());
-            List<Relatorio> relatorios = RelatorioRepository.current.relatoriosDoSetor(s.getCodigo());
-
-            s.setFuncionarios(funcionarios);
-            s.setRelatorios(relatorios);
+        if (!result.next()) {
+            return null;
         }
+
+        Setor s = new Setor();
+        s.setNome(result.getString("nome_setor"));
+        s.setCodigo(result.getInt("codigo_setor"));
+
+        List<Funcionario> funcionarios = FuncionarioRepository.current.findBySetor(s.getCodigo());
+        List<Relatorio> relatorios = RelatorioRepository.current.relatoriosDoSetor(s.getCodigo());
+
+        s.setFuncionarios(funcionarios);
+        s.setRelatorios(relatorios);
 
         return s;
     }
+
 
     @Override
     public void delete(Integer k) throws SQLException {

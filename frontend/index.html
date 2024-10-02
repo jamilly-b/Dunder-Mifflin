@@ -7,12 +7,6 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/lista.css">
     <link rel="stylesheet" href="css/modal.css">
-    <script>
-        const isAuthenticated = sessionStorage.getItem('authToken');
-        if(!isAuthenticated){
-            window.location.href = "login.html";
-        }
-    </script>
 </head>
 <body>
     <article>
@@ -33,7 +27,10 @@
                     </div>
                 </li>
             </ul>
-            <button class="botao-adm" onclick="AbrirModal()"> Novo Setor </button>        
+            <button class="botao-adm" onclick="AbrirModal()"> Novo Setor </button>  
+            <div style="margin-top: 8rem">
+                <a id="link-login" href="login.html" style="font-size: medium; text-decoration: underline;">Fazer login</a>      
+            </div>
     </article>
     <div class="modal" style="display: none;">
         <form>
@@ -43,7 +40,6 @@
             <input type="button" value="Fechar" onclick="FecharModal()">
         </form>
     </div>
-
     <script>
         async function fetchSetores() {
             try {
@@ -120,5 +116,20 @@
         }
     </script>
     <script src="header.js"></script>
+    <script>
+        const isAuthenticated = sessionStorage.getItem('authToken');
+        if(!isAuthenticated){
+            const botaoNovoFuncionario = document.querySelector("button.botao-adm");
+            if (botaoNovoFuncionario) {
+                botaoNovoFuncionario.style.display = "none";
+            }
+        }
+        if(isAuthenticated){
+            const linkLogin = document.querySelector("#link-login");
+            if (linkLogin) {
+                linkLogin.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

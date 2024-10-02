@@ -18,6 +18,11 @@
             const isAuthenticated = sessionStorage.getItem('authToken');
             const setorId = getQueryParam("codigo");
 
+            if(!isAuthenticated){
+                const botaoNovoFuncionario = document.querySelector(".botao-adm");
+                botaoNovoFuncionario.style.display = "none";
+            }
+
             if (setorId) {
                 const url = `http://localhost:8080/setores/${setorId}`; 
                 fetch(url)
@@ -167,5 +172,15 @@
             <input type="button" value="Fechar" onclick="FecharModal()">
         </form>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const relatoConcluido = localStorage.getItem('relatoConcluido');
+            if (relatoConcluido === 'true') {
+                alert('Relato enviado com sucesso!');
+                localStorage.removeItem('relatoConcluido');
+            }
+        });
+    </script>
+    
 </body>
 </html>

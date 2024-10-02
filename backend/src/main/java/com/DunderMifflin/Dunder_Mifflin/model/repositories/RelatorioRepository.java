@@ -2,6 +2,7 @@ package com.DunderMifflin.Dunder_Mifflin.model.repositories;
 
 import com.DunderMifflin.Dunder_Mifflin.DTO.RelatorioDTO;
 import com.DunderMifflin.Dunder_Mifflin.model.entities.Relatorio;
+import com.DunderMifflin.Dunder_Mifflin.model.entities.Setor;
 import com.DunderMifflin.Dunder_Mifflin.model.entities.TipoRelatorio;
 import com.DunderMifflin.Dunder_Mifflin.utils.DateFormatter;
 
@@ -235,7 +236,7 @@ public class RelatorioRepository implements Repository<Relatorio, Integer> {
             String nomeFuncionario = FuncionarioRepository.current.read(relatorio.getFuncionario()).getNome();
             dto.setFuncionario(nomeFuncionario);
 
-            String nomeSetor = SetorRepository.current.read(relatorio.getFuncionario()).getNome();
+            String nomeSetor = SetorRepository.current.read(relatorio.getSetor()).getNome();
             dto.setSetor(nomeSetor);
 
             dtos.add(dto);

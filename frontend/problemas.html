@@ -70,11 +70,12 @@
                         body: JSON.stringify(dataRelatorio)
                     })
                     .then(response => {
+
                         if (!response.ok) {
                             throw new Error('Erro ao enviar relatório');
                         }
-                        history.back(); 
-                        alert('Relatório enviado com sucesso!');
+                        localStorage.setItem('relatoConcluido', 'true');
+                        history.back();
                     })
                     .catch(error => {
                         console.error('Erro:', error);
